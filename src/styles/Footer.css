@@ -1,0 +1,13 @@
+footer {
+  background-color: var(--main-color);
+  padding: 1.5em 1.5em;
+  width: 100vw;
+  
+  a {
+    color: var(--medium-color);
+    padding: 3px 5px;
+  }
+  a:visited {
+    color: var(--medium-color);
+  }
+}

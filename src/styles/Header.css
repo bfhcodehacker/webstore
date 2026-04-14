@@ -1,0 +1,137 @@
+header {
+  background-color: var(--main-color);
+  width: 100vw;
+
+  .mobile-header {
+    display: none;
+  }
+
+  .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1.5em 1.5em 0;
+  }
+
+  .home-logo {
+    border-style: solid;
+    padding: 10px;
+    border-width: 2px;
+    border-radius: 5px;
+    border-color: var(--light-color);
+    color: var(--light-color);
+    font-size: 1.5em;
+    margin-right: 20px;
+  }
+
+  .header-links {
+    display: flex;
+    flex-grow: 1;
+  }
+
+  .search-input {
+    display: flex;
+    border-radius: 5px;
+    padding: 5px;
+    padding-left: 10px;
+    background-color: white;
+    flex-grow: 1;
+    max-width: 600px;
+    align-items: center;
+  }
+
+  .search-text {
+    margin-top: 2px;
+  }
+
+  .search-icon {
+    margin-right: 10px;
+  }
+
+  .account-link, .cart-link {
+    margin-left: 20px;
+  }
+
+  .header-icon {
+    color: var(--light-color);
+    font-size: 32px;
+    margin-top: 5px;
+  }
+
+  li {
+    display: flex;
+    flex-direction: row;
+    
+    a {
+      color: var(--medium-color);
+    }
+
+    a:visited {
+      color: var(--medium-color);
+    }
+  }
+
+  .side-bar {
+    background-color: var(--main-color);
+    height: 100vh;
+    width: 200px;
+    display: none;
+  }
+
+}
+
+@media screen and (max-width: 580px) {
+  header {
+    .desktop-header {
+      display: none;
+    }
+    .mobile-header {
+      display: block;
+    }
+
+    .mobile-title-row {
+      margin: 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .home-logo {
+      font-size: 1.2em;
+      margin-right: 0px;
+    }
+
+    .cart-link {
+      margin-left: 0px;
+    }
+
+    .mobile-search-input {
+      display: flex;
+      border-radius: 5px;
+      padding: 5px;
+      padding-left: 10px;
+      background-color: white;
+      align-items: center;
+      margin: 5%;
+      width: 90%;
+      justify-self: center;
+    }
+
+    .side-bar.active {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .close-sidebar {
+      color: var(--medium-color);
+      margin: 20px 0 0 20px;
+      font-size: 32px;
+    }
+
+    nav li {
+      flex-direction: column;
+    }
+  }
+}
