@@ -27,6 +27,7 @@ header {
   .header-links {
     display: flex;
     flex-grow: 1;
+    justify-content: space-between;
   }
 
   .search-input {
@@ -58,6 +59,10 @@ header {
     margin-top: 5px;
   }
 
+  .header-nav {
+    margin-right: 20px;
+  }
+
   li {
     display: flex;
     flex-direction: row;
@@ -80,7 +85,7 @@ header {
 
 }
 
-@media screen and (max-width: 580px) {
+@media screen and (max-width: 588px) {
   header {
     .desktop-header {
       display: none;
