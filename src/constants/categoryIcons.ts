@@ -1,4 +1,4 @@
-interface categoryIconsInterface {
+type categoryIconsInterface = {
   [key: string]: string;
 }
 

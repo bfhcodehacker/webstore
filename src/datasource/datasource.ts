@@ -1,4 +1,6 @@
 import axios from "axios";
+import type { Category } from "../types/categoryTypes";
+import type { HomeProducts, Product } from "../types/productTypes";
 
 const axiosClient = axios.create({
   baseURL: 'https://dummyjson.com/',
@@ -6,47 +8,47 @@ const axiosClient = axios.create({
 });
 
 const datasource = class {
-  fetchCategories = async () => {
-    const categories = await axiosClient.get('products/categories');
-    return categories;
+  fetchCategories = async (): Promise<Category[]> => {
+    const response = await axiosClient.get('products/categories');
+    return response.data;
   }
 
-  fetchCategory = async (id: string) => {
-    const products = await axiosClient.get(`products/category/${id}`);
-    return products;
+  fetchCategory = async (id: string): Promise<Product[]> => {
+    const response = await axiosClient.get(`products/category/${id}`);
+    return response.data;
   }
 
-  fetchProducts = async () => {
-    const products = await axiosClient.get('products');
-    const deals = (products.data.products || []).slice(0, 8);
-    const featured = (products.data.products || []).slice(9, 16);
+  fetchProducts = async (): Promise<HomeProducts> => {
+    const response = await axiosClient.get('products');
+    const deals = (response.data.products || []).slice(0, 8);
+    const featured = (response.data.products || []).slice(9, 16);
 
     return { deals, featured };
   }
 
-  fetchProduct = async (id: string) => {
-    const product = await axiosClient.get(`products/${id}`);
-    return product;
+  fetchProduct = async (id: string): Promise<Product> => {
+    const response = await axiosClient.get(`products/${id}`);
+    return response.data;
   }
 
   searchProducts = async (query: string) => {
-    const products = await axiosClient.get(`products/search?=${query}`);
-    return products;
+    const response = await axiosClient.get(`products/search?=${query}`);
+    return response.data;
   }
 
   fetchRecipes = async () => {
-    const recipes = await axiosClient.get('recipes');
-    return recipes;
+    const response = await axiosClient.get('recipes');
+    return response.data;
   }
 
   fetchRecipe = async (id: string) => {
-    const recipe = await axiosClient.get(`recipes/${id}`);
-    return recipe;
+    const response = await axiosClient.get(`recipes/${id}`);
+    return response.data;
   }
 
   searchRecipes = async (query: string) => {
-    const recipes = await axiosClient.get(`recipes/search?q=${query}`);
-    return recipes;
+    const response = await axiosClient.get(`recipes/search?q=${query}`);
+    return response;
   }
 
   loginUser = async (username: string, password: string) => {
