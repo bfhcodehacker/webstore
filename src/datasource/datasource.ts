@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { Category } from "../types/categoryTypes";
-import type { HomeProducts, Product } from "../types/productTypes";
+import type { HomeProducts, Product, Products } from "../types/productTypes";
 
 const axiosClient = axios.create({
   baseURL: 'https://dummyjson.com/',
@@ -13,7 +13,7 @@ const datasource = class {
     return response.data;
   }
 
-  fetchCategory = async (id: string): Promise<Product[]> => {
+  fetchCategory = async (id: string): Promise<Products> => {
     const response = await axiosClient.get(`products/category/${id}`);
     return response.data;
   }

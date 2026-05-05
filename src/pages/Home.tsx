@@ -1,12 +1,10 @@
 import '../styles/Home.css';
 import { useQuery } from '@tanstack/react-query';
 import datasource from '../datasource/datasource';
-import type { Product } from '../types/productTypes';
 
-import defaultImage from '../assets/5191452-200.png';
 import { Link } from 'react-router';
-import type { Category } from '../types/categoryTypes';
-import { categoryIcons } from '../constants/categoryIcons';
+import { CategoryComponent } from '../components/Category';
+import { ProductComponent } from '../components/Product';
 
 export function HomePage() {
 
@@ -24,19 +22,7 @@ export function HomePage() {
     return <div>...Loading</div>
   }
 
-  console.log('products', productQuery.data);
-  console.log('categories', categoryQuery.data);
-
-  const renderCategory = (category: Category) => {
-    const slug = category?.slug || 'default';
-    const iconName = categoryIcons[slug];
-    return (
-      <Link className='category-container' to='Category'>
-        <span className={`material-icons-sharp ${iconName}`}>{iconName}</span>
-        <div className='product-title'>{category.name}</div>
-      </Link>
-    );
-  }
+  console.log('categories: ', categoryQuery.data);
 
   const renderCategories = () => {
     const categories = categoryQuery.data?.slice(0, 8);
@@ -45,15 +31,17 @@ export function HomePage() {
         <div className='section-title'>Featured Categories</div>
         <div className='categories-container'>
           {categoryQuery.isPending && renderLoading()}
-          {categories && categories.map(renderCategory)}
+          {categories && categories.map(CategoryComponent)}
         </div>
       </div>
     )
   }
 
+  /*
   const renderProduct = (product: Product) => {
+
     return (
-      <Link className='product-container' to='Product'>
+      <Link className='product-container' to='Product' key={product.title}>
           <img src={product?.images?.[0] || defaultImage} className='product-image' />
           <div className='product-title'>
             {product.title}
@@ -61,6 +49,7 @@ export function HomePage() {
       </Link>
     );
   }
+*/
 
   const renderProducts = (isFeatured?: boolean) => {
     const products = isFeatured ? productQuery.data?.featured : productQuery.data?.deals;
@@ -70,7 +59,7 @@ export function HomePage() {
         <div className='section-title'>{title}</div>
         <div className='products-container'>
           {productQuery.isPending && renderLoading()}
-          {products && products.map(renderProduct)}
+          {products && products.map(ProductComponent)}
         </div>
       </div>
     )
