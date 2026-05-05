@@ -37,20 +37,6 @@ export function HomePage() {
     )
   }
 
-  /*
-  const renderProduct = (product: Product) => {
-
-    return (
-      <Link className='product-container' to='Product' key={product.title}>
-          <img src={product?.images?.[0] || defaultImage} className='product-image' />
-          <div className='product-title'>
-            {product.title}
-          </div>
-      </Link>
-    );
-  }
-*/
-
   const renderProducts = (isFeatured?: boolean) => {
     const products = isFeatured ? productQuery.data?.featured : productQuery.data?.deals;
     const title = isFeatured ? 'Featured Products' : 'Deals';
