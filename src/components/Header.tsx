@@ -20,10 +20,10 @@ function Header() {
               <span className='search-text'>Search for products</span>
             </div>
             <div className='header-nav'>
-              <Link className='cart-link' to='cart'>
+              <Link className='cart-link' to='/cart'>
                 <span className="material-icons-outlined header-icon">shopping_cart</span>
               </Link>
-              <Link className='account-link' to='account'>
+              <Link className='account-link' to='/account'>
                 <span className="material-icons-outlined header-icon">account_circle</span>
               </Link>
             </div>
