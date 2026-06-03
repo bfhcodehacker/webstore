@@ -1,8 +1,10 @@
 import { Link } from "react-router"
 import { useState } from "react";
 import '../styles/Header.css'
+import { useAppSelector } from "../app/hooks";
 
 function Header() {
+  const cartCount = useAppSelector(state => state.cart.cartCount);
   const [sidebarActive, setSidebarActive] = useState(false);
 
   const toggleSidebar = () => {
@@ -22,6 +24,7 @@ function Header() {
             <div className='header-nav'>
               <Link className='cart-link' to='/cart'>
                 <span className="material-icons-outlined header-icon">shopping_cart</span>
+                {cartCount && <span className='cart-count'>{cartCount}</span>}
               </Link>
               <Link className='account-link' to='/account'>
                 <span className="material-icons-outlined header-icon">account_circle</span>
