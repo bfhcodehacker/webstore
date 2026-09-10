@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { Category } from "../types/categoryTypes";
 import type { HomeProducts, Product, Products } from "../types/productTypes";
-import type { AuthUser } from '../types/authTypes';
+import type { AuthUser, UserDetails } from '../types/authTypes';
 
 const axiosClient = axios.create({
   baseURL: 'https://dummyjson.com/',
@@ -58,6 +58,11 @@ const datasource = class {
       password,
       expiresInMins: 30,
     });
+    return response.data;
+  }
+
+  fetchUser = async (id: number): Promise<UserDetails> => {
+    const response = await axiosClient.get<UserDetails>(`users/${id}`);
     return response.data;
   }
 };
