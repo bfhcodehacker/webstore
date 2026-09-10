@@ -2,6 +2,7 @@ import axios from "axios";
 import type { Category } from "../types/categoryTypes";
 import type { HomeProducts, Product, Products } from "../types/productTypes";
 import type { AuthUser, UserDetails } from '../types/authTypes';
+import type { Recipe, RecipesResponse } from '../types/recipeTypes';
 
 const axiosClient = axios.create({
   baseURL: 'https://dummyjson.com/',
@@ -37,13 +38,13 @@ const datasource = class {
     return response.data;
   }
 
-  fetchRecipes = async () => {
-    const response = await axiosClient.get('recipes');
+  fetchRecipes = async (limit = 10, skip = 0): Promise<RecipesResponse> => {
+    const response = await axiosClient.get<RecipesResponse>('recipes', { params: { limit, skip } });
     return response.data;
   }
 
-  fetchRecipe = async (id: string) => {
-    const response = await axiosClient.get(`recipes/${id}`);
+  fetchRecipe = async (id: string): Promise<Recipe> => {
+    const response = await axiosClient.get<Recipe>(`recipes/${id}`);
     return response.data;
   }
 

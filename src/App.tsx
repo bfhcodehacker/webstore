@@ -9,6 +9,7 @@ import { Product } from './pages/Product.tsx'
 import { Account } from './pages/Account.tsx'
 import { Deals } from './pages/Deals.tsx'
 import { Recipes } from './pages/Recipes.tsx'
+import { Recipe } from './pages/Recipe.tsx'
 import { Cart } from './pages/Cart.tsx'
 import { Checkout } from './pages/Checkout.tsx'
 import { HeaderFooterLayout } from './components/HeaderFooterLayout.tsx'
@@ -34,6 +35,7 @@ export function App() {
           <Route path='sign-in' element={<SignIn />} />
           <Route path='account' element={<RequireAuth><Account /></RequireAuth>} />
           <Route path='recipes' element={<Recipes />} />
+          <Route path='recipe/:id' element={<Recipe />} />
         </Route>
         <Route path='cart' element={<Cart />} />
         <Route path='checkout' element={<Checkout />} />
