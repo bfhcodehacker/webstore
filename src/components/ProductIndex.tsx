@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import type { Product } from "../types/productTypes";
 import defaultImage from '../assets/5191452-200.png';
+import { StarRating } from './StarRating';
 
 type ProductIndexComponentProps = {
   product: Product;
@@ -20,9 +21,7 @@ export const ProductIndexComponent = ({ product, onAddToCart }: ProductIndexComp
           {product.title}
         </div>
         <div className='productindex-product-details'>
-          <div className='productindex-product-rating'>
-            Rating: {product.rating}
-          </div>
+          {product.rating !== undefined && <StarRating rating={product.rating} />}
           <div className='productindex-product-price'>
             ${product.price}
           </div>

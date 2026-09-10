@@ -8,6 +8,7 @@ import datasource from "../datasource/datasource";
 import defaultImage from '../assets/5191452-200.png';
 import { useAppDispatch } from '../app/hooks';
 import { addToCart } from '../slices/cartSlice';
+import { StarRating } from '../components/StarRating';
 
 export function Product() {
   const [expandedDetails, setExpandedDetails] = useState<Record<string, boolean>>({});
@@ -32,24 +33,6 @@ export function Product() {
 
   const toggleDetail = (detail: string) => {
     setExpandedDetails((current) => ({ ...current, [detail]: !current[detail] }));
-  };
-
-  const renderRating = (rating: number) => {
-    const roundedRating = Math.floor(rating * 2) / 2;
-
-    return (
-      <div className='product-page-rating' aria-label={`${rating} out of 5 stars`}>
-        {[0, 1, 2, 3, 4].map((index) => {
-          const icon = roundedRating >= index + 1
-            ? 'star'
-            : roundedRating >= index + 0.5
-              ? 'star_half'
-              : 'star_border';
-
-          return <span className='material-icons' aria-hidden='true' key={index}>{icon}</span>;
-        })}
-      </div>
-    );
   };
 
   const getErrorMessage = () => {
@@ -167,7 +150,7 @@ export function Product() {
               <div className='product-page-price'>${data.price.toFixed(2)}</div>
             )}
             {data.rating !== undefined && (
-              renderRating(data.rating)
+              <StarRating rating={data.rating} />
             )}
             <p className='product-page-description'>{data.description}</p>
             <div className='product-details-section'>

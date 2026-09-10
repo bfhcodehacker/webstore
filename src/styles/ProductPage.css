@@ -55,14 +55,8 @@
   align-items: flex-start;
 }
 
-.product-page-rating {
-  display: flex;
+.product-page-data-box > .product-rating-stars {
   margin-top: 8px;
-  color: var(--main-color);
-}
-
-.product-page-rating .material-icons {
-  font-size: 26px;
 }
 
 .product-page-description {

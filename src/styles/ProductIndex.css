@@ -84,7 +84,6 @@
   color: var(--dark-color);
 }
 
-.productindex-product-rating { font-size: 15px; }
 .productindex-product-price { color: var(--main-color); font-size: 18px; font-weight: bold; }
 
 .productindex-add-to-cart {
