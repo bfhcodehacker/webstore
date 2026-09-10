@@ -8,25 +8,23 @@ import { ProductComponent } from '../components/Product';
 import { useAppDispatch } from '../app/hooks';
 import { addToCart } from '../slices/cartSlice';
 import type { Product } from '../types/productTypes';
+import { RequestState } from '../components/RequestState';
+import { getRequestErrorMessage, shouldRetryRequest } from '../utils/requestError';
 
 export function HomePage() {
   const dispatch = useAppDispatch();
 
   const categoryQuery = useQuery({
     queryKey: ['categories'],
-    queryFn: datasource.fetchCategories
+    queryFn: datasource.fetchCategories,
+    retry: shouldRetryRequest,
   });
 
   const productQuery = useQuery({
     queryKey: ['products'],
-    queryFn: datasource.fetchProducts
+    queryFn: datasource.fetchProducts,
+    retry: shouldRetryRequest,
   })
-
-  const renderLoading = () => {
-    return <div>...Loading</div>
-  }
-
-  console.log('categories: ', categoryQuery.data);
 
   const renderCategories = () => {
     const categories = categoryQuery.data?.slice(0, 8);
@@ -34,8 +32,10 @@ export function HomePage() {
       <div className='section-box'>
         <div className='section-title'>Featured Categories</div>
         <div className='categories-container'>
-          {categoryQuery.isPending && renderLoading()}
-          {categories && categories.map(CategoryComponent)}
+          {categoryQuery.isPending && <RequestState title='Loading categories...' icon='hourglass_empty' />}
+          {categoryQuery.isError && <RequestState title='Unable to load categories' message={getRequestErrorMessage(categoryQuery.error, 'categories')} isRetrying={categoryQuery.isFetching} onRetry={() => categoryQuery.refetch()} />}
+          {categoryQuery.isSuccess && !categories?.length && <RequestState title='No categories available' message='Please check back later.' icon='inventory_2' />}
+          {categories?.map(CategoryComponent)}
         </div>
       </div>
     )
@@ -48,8 +48,10 @@ export function HomePage() {
       <div className='section-box'>
         <div className='section-title'>{title}</div>
         <div className='products-container'>
-          {productQuery.isPending && renderLoading()}
-          {products && products.map((product: Product) => (
+          {productQuery.isPending && <RequestState title={`Loading ${title.toLowerCase()}...`} icon='hourglass_empty' />}
+          {productQuery.isError && <RequestState title={`Unable to load ${title.toLowerCase()}`} message={getRequestErrorMessage(productQuery.error, 'products')} isRetrying={productQuery.isFetching} onRetry={() => productQuery.refetch()} />}
+          {productQuery.isSuccess && !products?.length && <RequestState title={`No ${title.toLowerCase()} available`} message='Please check back later.' icon='inventory_2' />}
+          {products?.map((product: Product) => (
             <ProductComponent
               key={product.id}
               product={product}
@@ -67,9 +69,9 @@ export function HomePage() {
     <div className='home-container'>
       <main className='home-main-container'>
         <Link className='home-banner' to='Deals'>Shop our Deals!</Link>
-        {!productQuery.isError && renderProducts(true)}         
-        {!categoryQuery.isError && renderCategories()}
-         {!productQuery.isError && renderProducts()}         
+        {renderProducts(true)}
+        {renderCategories()}
+        {renderProducts()}
       </main>
     </div>
   )
