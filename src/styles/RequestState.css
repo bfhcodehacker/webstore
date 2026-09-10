@@ -1,0 +1,55 @@
+.request-state {
+  display: flex;
+  width: min(560px, calc(100% - 40px));
+  box-sizing: border-box;
+  align-items: center;
+  gap: 14px;
+  margin: 10px auto 30px;
+  padding: 18px;
+  border: 1px solid var(--medium-color);
+  border-radius: 8px;
+  background-color: white;
+  color: var(--dark-color);
+}
+
+.request-state-icon {
+  flex: none;
+  color: var(--main-color);
+  font-size: 32px;
+}
+
+.request-state-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.4;
+}
+
+.request-state-copy strong {
+  color: var(--main-color);
+}
+
+.request-state button {
+  flex: none;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 4px;
+  background-color: var(--main-color);
+  color: var(--light-color);
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.request-state button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 520px) {
+  .request-state {
+    flex-direction: column;
+    text-align: center;
+  }
+}

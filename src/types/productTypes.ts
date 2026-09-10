@@ -31,6 +31,7 @@ export type Product = {
 }
 
 export type Dimensions = {
+  width?:  number;
   height?: number;
   depth?:  number;
 }

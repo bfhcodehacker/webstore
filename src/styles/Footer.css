@@ -1,13 +1,17 @@
-footer {
-  background-color: var(--main-color);
-  padding: 1.5em 1.5em;
-  width: 100vw;
-  
-  a {
-    color: var(--medium-color);
-    padding: 3px 5px;
-  }
-  a:visited {
-    color: var(--medium-color);
-  }
+.footer-container { width: 100%; box-sizing: border-box; padding: 36px clamp(20px, 5vw, 64px) 20px; background: linear-gradient(135deg, var(--main-color), #650019); color: var(--light-color); }
+.footer-content { display: flex; width: min(1200px, 100%); justify-content: space-between; gap: 48px; margin: 0 auto; }
+.footer-brand { max-width: 420px; }
+.footer-logo { color: var(--light-color); font-size: 22px; font-weight: bold; }
+.footer-logo:visited, .footer-navigation a:visited { color: var(--light-color); }
+.footer-brand p { margin: 10px 0 0; color: var(--medium-color); line-height: 1.5; }
+.footer-navigation h2 { margin: 0 0 10px; font-size: 17px; }
+.footer-navigation ul { margin: 0; padding: 0; list-style: none; }
+.footer-navigation li + li { margin-top: 8px; }
+.footer-navigation a { color: var(--light-color); }
+.footer-navigation a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.footer-logo:focus-visible, .footer-navigation a:focus-visible { outline: 3px solid var(--light-color); outline-offset: 4px; }
+.footer-bottom { width: min(1200px, 100%); margin: 28px auto 0; padding-top: 18px; border-top: 1px solid rgb(240 236 226 / 25%); color: var(--medium-color); font-size: 14px; }
+
+@media screen and (max-width: 600px) {
+  .footer-content { flex-direction: column; gap: 28px; }
 }

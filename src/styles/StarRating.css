@@ -1,0 +1,8 @@
+.product-rating-stars {
+  display: flex;
+  color: var(--main-color);
+}
+
+.product-rating-stars .material-icons {
+  font-size: 26px;
+}

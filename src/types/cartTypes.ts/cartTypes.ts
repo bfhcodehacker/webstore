@@ -8,5 +8,5 @@ export type CartProduct = {
 export type CartState = {
   cartCount: number;
   cart: CartProduct[];
+  addedProduct: Product | null;
 }
-

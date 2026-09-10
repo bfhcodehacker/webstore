@@ -5,7 +5,8 @@ import type { AddToCart, DecrementCartItem, IncrementCartItem, RemoveFromCart } 
 
 const initialState: CartState = {
   cartCount: 0,
-  cart: []
+  cart: [],
+  addedProduct: null
 }
 
 export const cartSlice = createSlice({
@@ -20,12 +21,16 @@ export const cartSlice = createSlice({
         state.cart[index].quantity += 1;
       }
       state.cartCount += 1;
+      state.addedProduct = action.payload.product;
+    },
+    dismissAddedToCart: (state) => {
+      state.addedProduct = null;
     },
     removeFromCart: (state, action: PayloadAction<RemoveFromCart>) => {
       const index = state.cart.findIndex(cartProd => cartProd.product.id === action.payload.id);
       if (index > -1) {
         state.cartCount -= state.cart[index].quantity;
-        state.cart.splice(index);
+        state.cart.splice(index, 1);
       }
     },
     incrementCartItem: (state, action: PayloadAction<IncrementCartItem>) => {
@@ -41,7 +46,7 @@ export const cartSlice = createSlice({
         state.cartCount -=1;
         const qty = state.cart[index].quantity;
         if (qty === 1) {
-          state.cart.splice(index);
+          state.cart.splice(index, 1);
         } else {
           state.cart[index].quantity -= 1;
         }
@@ -50,6 +55,6 @@ export const cartSlice = createSlice({
   }
 });
 
-export const { addToCart, removeFromCart, incrementCartItem, decrementCartItem } = cartSlice.actions;
+export const { addToCart, dismissAddedToCart, removeFromCart, incrementCartItem, decrementCartItem } = cartSlice.actions;
 
 export default cartSlice.reducer;

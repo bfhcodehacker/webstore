@@ -1,55 +1,69 @@
 .home-container {
-  display: flex;
   flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px 0px;
+  padding: 28px clamp(16px, 4vw, 64px) 48px;
 }
 
 .home-main-container {
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
+  width: min(1200px, 100%);
+  margin: 0 auto;
 }
 
 .home-banner {
-  height: 80px;
   display: flex;
-  flex: 1;
-  flex-direction: row;
-  font-size: 36px;
+  min-height: 110px;
   align-items: center;
   justify-content: center;
-  background-color: var(--main-color);
+  gap: 12px;
+  margin-bottom: 48px;
+  padding: 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--main-color), #ad3150);
+  box-shadow: 0 8px 24px rgb(47 47 48 / 18%);
   color: var(--light-color);
-  margin-bottom: 30px;
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: bold;
+  text-align: center;
+  transition: transform 160ms ease, box-shadow 160ms ease;
 }
 
-.section-box {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
+.home-banner:visited { color: var(--light-color); }
+.home-banner:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgb(47 47 48 / 24%); }
+
+.home-banner:focus-visible,
+.product-link:focus-visible,
+.category-container:focus-visible,
+.product-add-to-cart:focus-visible {
+  outline: 3px solid var(--medium-color);
+  outline-offset: 4px;
 }
+
+.section-box { margin-bottom: 52px; }
 
 .section-title {
+  margin: 0 0 22px;
   color: var(--main-color);
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
+  font-size: clamp(24px, 3vw, 32px);
 }
 
-.products-container {
-  justify-self: center;
-  justify-content: center;
-  display: flex;
-  flex-wrap: wrap;
-}
-
+.products-container,
 .categories-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 20px;
+}
+
+.categories-container { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+
+.products-container > .request-state,
+.categories-container > .request-state { grid-column: 1 / -1; }
+
+@media screen and (max-width: 520px) {
+  .home-container { padding-top: 20px; }
+  .home-banner { min-height: 84px; margin-bottom: 36px; }
+  .products-container { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .categories-container { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-banner { transition: none; }
 }

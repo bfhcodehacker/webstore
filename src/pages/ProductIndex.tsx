@@ -24,7 +24,9 @@ export function ProductIndex() {
         </div>
       </div>
       <div className='product-index-container'>
-        {plpQuery.data?.products && plpQuery.data.products.map(ProductIndexComponent)}
+        {plpQuery.data?.products?.map((product) => (
+          <ProductIndexComponent key={product.id} product={product} />
+        ))}
       </div>
     </>
   );
