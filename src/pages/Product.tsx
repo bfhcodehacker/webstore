@@ -2,7 +2,8 @@ import '../styles/ProductPage.css';
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router"
+import { Link, useParams } from "react-router"
+import axios from 'axios';
 import datasource from "../datasource/datasource";
 import defaultImage from '../assets/5191452-200.png';
 import { useAppDispatch } from '../app/hooks';
@@ -15,7 +16,12 @@ export function Product() {
   const queryKey = params.id ? 'product' + params.id : 'empty-product-key';
   const productQuery = useQuery({
     queryKey: [queryKey, params.id],
-    queryFn: () => datasource.fetchProduct(params.id || '')
+    queryFn: () => datasource.fetchProduct(params.id!),
+    enabled: Boolean(params.id),
+    retry: (failureCount, error) => {
+      if (axios.isAxiosError(error) && error.response && error.response.status < 500) return false;
+      return failureCount < 2;
+    },
   });
 
   const addProductToCart = () => {
@@ -45,6 +51,43 @@ export function Product() {
       </div>
     );
   };
+
+  const getErrorMessage = () => {
+    const error = productQuery.error;
+
+    if (!axios.isAxiosError(error)) {
+      return 'Something unexpected happened while loading this product.';
+    }
+    if (error.code === 'ECONNABORTED') {
+      return 'The request took too long. Please check your connection and try again.';
+    }
+    if (!error.response) {
+      return 'We could not connect to the store. Check your internet connection and try again.';
+    }
+    if (error.response.status === 404) {
+      return 'This product could not be found. It may no longer be available.';
+    }
+    if (error.response.status >= 500) {
+      return 'The store is temporarily unavailable. Please try again in a moment.';
+    }
+    return 'We could not load this product. Please try again.';
+  };
+
+  const renderIssue = (title: string, message: string, canRetry = true) => (
+    <div className='product-page-status' role='alert'>
+      <span className='material-icons product-page-status-icon' aria-hidden='true'>error_outline</span>
+      <h1>{title}</h1>
+      <p>{message}</p>
+      <div className='product-page-status-actions'>
+        {canRetry && (
+          <button type='button' onClick={() => productQuery.refetch()} disabled={productQuery.isFetching}>
+            {productQuery.isFetching ? 'Trying Again...' : 'Try Again'}
+          </button>
+        )}
+        <Link to='/'>Return Home</Link>
+      </div>
+    </div>
+  );
 
   const renderProduct = () => {
     const { data } = productQuery;
@@ -113,6 +156,10 @@ export function Product() {
               src={data.images?.[0] || defaultImage}
               className='product-page-image'
               alt={data.title || 'Product'}
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = defaultImage;
+              }}
             />
           </div>
           <div className='product-page-data-box'>
@@ -150,8 +197,11 @@ export function Product() {
 
   return (
     <div className='product-page-container'>
-      {productQuery.isPending && renderLoading()}
-      {productQuery.data && renderProduct()}
+      {!params.id && renderIssue('Invalid Product', 'No product was specified in this URL.', false)}
+      {params.id && productQuery.isPending && renderLoading()}
+      {params.id && productQuery.isError && renderIssue('Unable to Load Product', getErrorMessage(), axios.isAxiosError(productQuery.error) ? productQuery.error.response?.status !== 404 : true)}
+      {params.id && productQuery.isSuccess && (!productQuery.data?.id || !productQuery.data.title) && renderIssue('Product Data Unavailable', 'The store returned incomplete product information.')}
+      {params.id && productQuery.isSuccess && productQuery.data?.id && productQuery.data.title && renderProduct()}
     </div>
   )
 }

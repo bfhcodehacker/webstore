@@ -169,6 +169,71 @@
   text-align: center;
 }
 
+.product-page-status {
+  display: flex;
+  width: min(560px, 100%);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px auto;
+  padding: 36px;
+  border: 1px solid var(--main-color);
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 4px 14px rgb(47 47 48 / 12%);
+  color: var(--dark-color);
+  text-align: center;
+}
+
+.product-page-status-icon {
+  color: var(--main-color);
+  font-size: 48px;
+}
+
+.product-page-status h1 {
+  margin: 12px 0 8px;
+  color: var(--main-color);
+  font-size: 28px;
+}
+
+.product-page-status p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.product-page-status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.product-page-status-actions button,
+.product-page-status-actions a {
+  padding: 10px 16px;
+  border: 1px solid var(--main-color);
+  border-radius: 4px;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.product-page-status-actions button {
+  background-color: var(--main-color);
+  color: var(--light-color);
+}
+
+.product-page-status-actions button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.product-page-status-actions a {
+  background-color: transparent;
+  color: var(--main-color);
+}
+
 @media screen and (max-width: 760px) {
   .product-page-container {
     padding: 24px 20px 100px;
