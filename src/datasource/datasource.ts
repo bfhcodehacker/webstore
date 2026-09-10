@@ -31,8 +31,8 @@ const datasource = class {
     return response.data;
   }
 
-  searchProducts = async (query: string) => {
-    const response = await axiosClient.get(`products/search?=${query}`);
+  searchProducts = async (query: string): Promise<Products> => {
+    const response = await axiosClient.get('products/search', { params: { q: query } });
     return response.data;
   }
 

@@ -12,7 +12,7 @@
   min-height: 76px;
   box-sizing: border-box;
   align-items: center;
-  gap: 32px;
+  gap: 20px;
   margin: 0 auto;
   padding: 12px clamp(16px, 4vw, 48px);
 }
@@ -38,6 +38,63 @@
 .desktop-navigation a:hover { background-color: rgb(255 255 255 / 12%); }
 
 .header-actions { display: flex; align-items: center; gap: 8px; }
+
+.header-search {
+  display: flex;
+  min-width: 180px;
+  max-width: 340px;
+  flex: 1 1 260px;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 5px 4px 12px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-color: white;
+}
+
+.header-search:focus-within { border-color: var(--medium-color); }
+.header-search > .material-icons-sharp { flex: none; color: var(--main-color); }
+
+.header-search input {
+  min-width: 0;
+  flex: 1;
+  padding: 7px 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--dark-color);
+  font: inherit;
+}
+
+.header-search button {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--main-color);
+  color: var(--light-color);
+  cursor: pointer;
+}
+
+.header-search button:disabled { cursor: not-allowed; opacity: 0.45; }
+.header-search button:focus-visible { outline: 3px solid var(--medium-color); outline-offset: 2px; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 .header-icon-button {
   position: relative;
@@ -88,10 +145,11 @@
 .mobile-menu,
 .mobile-menu-backdrop { display: none; }
 
-@media screen and (max-width: 700px) {
-  .header-container { min-height: 68px; justify-content: space-between; gap: 10px; }
+@media screen and (max-width: 900px) {
+  .header-container { min-height: 68px; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
   .desktop-navigation, .account-link { display: none; }
   .mobile-menu-button { display: inline-flex; }
+  .header-search { order: 4; min-width: 100%; max-width: none; flex-basis: 100%; }
 
   .mobile-menu-backdrop {
     position: fixed;

@@ -1,5 +1,6 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
+import type { FormEvent } from 'react';
 import '../styles/Header.css';
 import { useAppSelector } from '../app/hooks';
 
@@ -10,8 +11,10 @@ const navigation = [
 ];
 
 function Header() {
+  const navigate = useNavigate();
   const cartCount = useAppSelector((state) => state.cart.cartCount);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -25,6 +28,15 @@ function Header() {
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
+
+  const submitSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const query = searchText.trim();
+    if (query) {
+      navigate(`/search?q=${encodeURIComponent(query)}`);
+      setSearchText('');
+    }
+  };
 
   return (
     <header className='site-header'>
@@ -43,6 +55,21 @@ function Header() {
         <Link className='home-logo' to='/' aria-label='Super WebStore home'>
           Super WebStore
         </Link>
+
+        <form className='header-search' role='search' onSubmit={submitSearch}>
+          <label className='visually-hidden' htmlFor='header-product-search'>Search products</label>
+          <span className='material-icons-sharp' aria-hidden='true'>search</span>
+          <input
+            id='header-product-search'
+            type='search'
+            value={searchText}
+            onChange={(event) => setSearchText(event.target.value)}
+            placeholder='Search products'
+          />
+          <button type='submit' aria-label='Submit product search' disabled={!searchText.trim()}>
+            <span className='material-icons' aria-hidden='true'>arrow_forward</span>
+          </button>
+        </form>
 
         <nav className='desktop-navigation' aria-label='Primary navigation'>
           <ul>

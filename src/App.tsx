@@ -13,6 +13,7 @@ import { Cart } from './pages/Cart.tsx'
 import { Checkout } from './pages/Checkout.tsx'
 import { HeaderFooterLayout } from './components/HeaderFooterLayout.tsx'
 import { AddedToCartModal } from './components/AddedToCartModal.tsx'
+import { SearchResults } from './pages/SearchResults.tsx'
 
 export function App() {
   return (
@@ -26,6 +27,7 @@ export function App() {
           <Route path='categories' element={<Categories />} />
           <Route path='category/:category' element={<ProductIndex />} />
           <Route path='product/:id' element={<Product />} />
+          <Route path='search' element={<SearchResults />} />
           <Route path='deals' element={<Deals />} />
           <Route path='account' element={<Account />} />
           <Route path='recipes' element={<Recipes />} />
