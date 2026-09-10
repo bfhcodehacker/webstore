@@ -30,7 +30,7 @@ export const cartSlice = createSlice({
       const index = state.cart.findIndex(cartProd => cartProd.product.id === action.payload.id);
       if (index > -1) {
         state.cartCount -= state.cart[index].quantity;
-        state.cart.splice(index);
+        state.cart.splice(index, 1);
       }
     },
     incrementCartItem: (state, action: PayloadAction<IncrementCartItem>) => {
@@ -46,7 +46,7 @@ export const cartSlice = createSlice({
         state.cartCount -=1;
         const qty = state.cart[index].quantity;
         if (qty === 1) {
-          state.cart.splice(index);
+          state.cart.splice(index, 1);
         } else {
           state.cart[index].quantity -= 1;
         }
