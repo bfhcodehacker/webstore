@@ -14,6 +14,9 @@ export function Account() {
     queryFn: () => datasource.fetchUser(signedInUser!.id),
     enabled: Boolean(signedInUser),
     retry: shouldRetryRequest,
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnMount: 'always',
   });
 
   if (!signedInUser) return null;
