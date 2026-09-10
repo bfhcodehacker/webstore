@@ -1,5 +1,4 @@
 .product-container {
-  display: inline-block;
   border-width: 1;
   border-color: var(--main-color);
   border-style: solid;
@@ -10,6 +9,17 @@
   margin-right: 10px;
   margin-bottom: 20px;
   padding: 10px;
+}
+
+.product-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+
+.product-container--with-action .product-link {
+  flex: 1;
 }
 
 .product-image {
@@ -25,4 +35,14 @@
   max-height: 55px;
   overflow: hidden;
   color: var(--main-color);
+}
+
+.product-add-to-cart {
+  margin-top: 10px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 4px;
+  background-color: var(--main-color);
+  color: var(--light-color);
+  cursor: pointer;
 }

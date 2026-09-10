@@ -5,8 +5,12 @@ import datasource from '../datasource/datasource';
 import { Link } from 'react-router';
 import { CategoryComponent } from '../components/Category';
 import { ProductComponent } from '../components/Product';
+import { useAppDispatch } from '../app/hooks';
+import { addToCart } from '../slices/cartSlice';
+import type { Product } from '../types/productTypes';
 
 export function HomePage() {
+  const dispatch = useAppDispatch();
 
   const categoryQuery = useQuery({
     queryKey: ['categories'],
@@ -45,7 +49,15 @@ export function HomePage() {
         <div className='section-title'>{title}</div>
         <div className='products-container'>
           {productQuery.isPending && renderLoading()}
-          {products && products.map(ProductComponent)}
+          {products && products.map((product: Product) => (
+            <ProductComponent
+              key={product.id}
+              product={product}
+              onAddToCart={isFeatured
+                ? (selectedProduct) => dispatch(addToCart({ product: selectedProduct }))
+                : undefined}
+            />
+          ))}
         </div>
       </div>
     )
