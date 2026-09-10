@@ -14,6 +14,8 @@ import { Checkout } from './pages/Checkout.tsx'
 import { HeaderFooterLayout } from './components/HeaderFooterLayout.tsx'
 import { AddedToCartModal } from './components/AddedToCartModal.tsx'
 import { SearchResults } from './pages/SearchResults.tsx'
+import { SignIn } from './pages/SignIn.tsx'
+import { RequireAuth } from './components/RequireAuth.tsx'
 
 export function App() {
   return (
@@ -29,7 +31,8 @@ export function App() {
           <Route path='product/:id' element={<Product />} />
           <Route path='search' element={<SearchResults />} />
           <Route path='deals' element={<Deals />} />
-          <Route path='account' element={<Account />} />
+          <Route path='sign-in' element={<SignIn />} />
+          <Route path='account' element={<RequireAuth><Account /></RequireAuth>} />
           <Route path='recipes' element={<Recipes />} />
         </Route>
         <Route path='cart' element={<Cart />} />

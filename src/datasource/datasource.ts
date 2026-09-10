@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { Category } from "../types/categoryTypes";
 import type { HomeProducts, Product, Products } from "../types/productTypes";
+import type { AuthUser } from '../types/authTypes';
 
 const axiosClient = axios.create({
   baseURL: 'https://dummyjson.com/',
@@ -51,14 +52,13 @@ const datasource = class {
     return response;
   }
 
-  loginUser = async (username: string, password: string) => {
-    const body = JSON.stringify({ username, password });
-    const loginRequest = axiosClient.post(
-      'user/login',
-      body,
-      { headers: { 'Content-Type': 'application/json' } }
-    );
-    return loginRequest;
+  loginUser = async (username: string, password: string): Promise<AuthUser> => {
+    const response = await axiosClient.post<AuthUser>('auth/login', {
+      username,
+      password,
+      expiresInMins: 30,
+    });
+    return response.data;
   }
 };
 
