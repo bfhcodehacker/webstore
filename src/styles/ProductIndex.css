@@ -29,6 +29,13 @@
   margin-bottom: 30px;
 }
 
+.productindex-product-link {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  text-decoration: none;
+}
+
 .productindex-product-title {
   text-align: center;
   color: var(--main-color);
@@ -52,6 +59,19 @@
   text-align: center;
   color: var(--main-color);
   font-size: 24px;
+}
+
+.productindex-add-to-cart {
+  align-self: center;
+  margin-top: 10px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 4px;
+  background-color: var(--main-color);
+  color: var(--light-color);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1240px) and (min-width: 800px) {
