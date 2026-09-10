@@ -48,9 +48,24 @@ const datasource = class {
     return response.data;
   }
 
-  searchRecipes = async (query: string) => {
-    const response = await axiosClient.get(`recipes/search?q=${query}`);
-    return response;
+  searchRecipes = async (query: string, limit = 10, skip = 0): Promise<RecipesResponse> => {
+    const response = await axiosClient.get<RecipesResponse>('recipes/search', { params: { q: query, limit, skip } });
+    return response.data;
+  }
+
+  fetchRecipeTags = async (): Promise<string[]> => {
+    const response = await axiosClient.get<string[]>('recipes/tags');
+    return response.data;
+  }
+
+  fetchRecipesByTag = async (tag: string, limit = 10, skip = 0): Promise<RecipesResponse> => {
+    const response = await axiosClient.get<RecipesResponse>(`recipes/tag/${encodeURIComponent(tag)}`, { params: { limit, skip } });
+    return response.data;
+  }
+
+  fetchRecipesByMeal = async (meal: string, limit = 10, skip = 0): Promise<RecipesResponse> => {
+    const response = await axiosClient.get<RecipesResponse>(`recipes/meal-type/${encodeURIComponent(meal)}`, { params: { limit, skip } });
+    return response.data;
   }
 
   loginUser = async (username: string, password: string): Promise<AuthUser> => {

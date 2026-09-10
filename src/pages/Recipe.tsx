@@ -58,8 +58,16 @@ export function Recipe() {
 
           <footer className='recipe-detail-footer'>
             {recipe.caloriesPerServing !== undefined && <span><strong>{recipe.caloriesPerServing}</strong> calories per serving</span>}
-            {recipe.mealType?.map((type) => <span className='recipe-tag' key={type}>{type}</span>)}
-            {recipe.tags?.map((tag) => <span className='recipe-tag' key={tag}>{tag}</span>)}
+            {recipe.mealType?.map((type) => (
+              <Link className='recipe-tag recipe-filter-link' to={`/recipes?meal=${encodeURIComponent(type)}`} key={type} aria-label={`View ${type} recipes`}>
+                {type}
+              </Link>
+            ))}
+            {recipe.tags?.map((tag) => (
+              <Link className='recipe-tag recipe-filter-link' to={`/recipes?tag=${encodeURIComponent(tag)}`} key={tag} aria-label={`View recipes tagged ${tag}`}>
+                {tag}
+              </Link>
+            ))}
           </footer>
         </article>
       )}
