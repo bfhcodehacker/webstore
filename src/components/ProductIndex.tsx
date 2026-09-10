@@ -9,7 +9,7 @@ type ProductIndexComponentProps = {
 
 export const ProductIndexComponent = ({ product, onAddToCart }: ProductIndexComponentProps) => {
   return (
-    <div className='productindex-product-container'>
+    <article className='productindex-product-container'>
       <Link className='productindex-product-link' to={`/product/${product.id}`}>
         <img
           src={product?.images?.[0] || defaultImage}
@@ -29,10 +29,10 @@ export const ProductIndexComponent = ({ product, onAddToCart }: ProductIndexComp
         </div>
       </Link>
       {onAddToCart && (
-        <button className='productindex-add-to-cart' onClick={() => onAddToCart(product)}>
+        <button className='productindex-add-to-cart' onClick={() => onAddToCart(product)} aria-label={`Add ${product.title || 'product'} to cart`}>
           Add To Cart
         </button>
       )}
-    </div>
+    </article>
   );
 }

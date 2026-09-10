@@ -10,7 +10,7 @@ type ProductComponentProps = {
 
 export const ProductComponent = ({ product, onAddToCart }: ProductComponentProps) => {
   return (
-    <div className={`product-container${onAddToCart ? ' product-container--with-action' : ''}`}>
+    <article className={`product-container${onAddToCart ? ' product-container--with-action' : ''}`}>
       <Link className='product-link' to={`product/${product.id}`}>
         <img src={product?.images?.[0] || defaultImage} className='product-image' alt={product.title || 'Product'} />
         <div className='product-title'>
@@ -18,10 +18,10 @@ export const ProductComponent = ({ product, onAddToCart }: ProductComponentProps
         </div>
       </Link>
       {onAddToCart && (
-        <button className='product-add-to-cart' onClick={() => onAddToCart(product)}>
+        <button className='product-add-to-cart' onClick={() => onAddToCart(product)} aria-label={`Add ${product.title || 'product'} to cart`}>
           Add To Cart
         </button>
       )}
-    </div>
+    </article>
   );
 }

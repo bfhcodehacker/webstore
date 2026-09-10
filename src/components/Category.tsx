@@ -7,8 +7,8 @@ export const CategoryComponent = (category: Category) => {
   const slug = category?.slug || 'default';
   const iconName = categoryIcons[slug];
   return (
-    <Link className='category-container' to={`/category/${slug}`} key={slug}>
-      <span className={`material-icons-sharp ${iconName}`}>{iconName}</span>
+    <Link className='category-container' to={`/category/${slug}`}>
+      <span className={`material-icons-sharp ${iconName}`} aria-hidden='true'>{iconName}</span>
       <div className='category-title'>{category.name}</div>
     </Link>
   );
