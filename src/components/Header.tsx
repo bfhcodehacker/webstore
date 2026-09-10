@@ -1,87 +1,87 @@
-import { Link } from "react-router"
-import { useState } from "react";
-import '../styles/Header.css'
-import { useAppSelector } from "../app/hooks";
+import { Link } from 'react-router';
+import { useEffect, useState } from 'react';
+import '../styles/Header.css';
+import { useAppSelector } from '../app/hooks';
+
+const navigation = [
+  { to: '/categories', label: 'Categories' },
+  { to: '/deals', label: 'Deals' },
+  { to: '/recipes', label: 'Recipes' },
+];
 
 function Header() {
-  const cartCount = useAppSelector(state => state.cart.cartCount);
-  const [sidebarActive, setSidebarActive] = useState(false);
+  const cartCount = useAppSelector((state) => state.cart.cartCount);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setSidebarActive(!sidebarActive);
-  }
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header>
-      <div className='desktop-header'>
-        <div className='title-row'>
-          <Link className='home-logo' to='/'>Super WebStore</Link>
-          <div className='header-links'>
-            <div className='search-input'>
-              <span className='material-icons-sharp search-icon'>search</span>
-              <span className='search-text'>Search for products</span>
-            </div>
-            <div className='header-nav'>
-              <Link className='cart-link' to='/cart'>
-                <span className="material-icons-outlined header-icon">shopping_cart</span>
-                {cartCount && <span className='cart-count'>{cartCount}</span>}
-              </Link>
-              <Link className='account-link' to='/account'>
-                <span className="material-icons-outlined header-icon">account_circle</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-        <nav>
-          <li>
-            <ul>
-              <Link to='categories'>Categories</Link>
-            </ul>
-            <ul>
-              <Link to='deals'>Deals</Link>
-            </ul>
-            <ul>
-              <Link to='recipes'>Recipes</Link>
-            </ul>
-          </li>
+    <header className='site-header'>
+      <div className='header-container'>
+        <button
+          className='mobile-menu-button header-icon-button'
+          type='button'
+          aria-label='Open navigation menu'
+          aria-expanded={menuOpen}
+          aria-controls='primary-navigation'
+          onClick={() => setMenuOpen(true)}
+        >
+          <span className='material-icons-outlined' aria-hidden='true'>menu</span>
+        </button>
+
+        <Link className='home-logo' to='/' aria-label='Super WebStore home'>
+          Super WebStore
+        </Link>
+
+        <nav className='desktop-navigation' aria-label='Primary navigation'>
+          <ul>
+            {navigation.map((item) => (
+              <li key={item.to}><Link to={item.to}>{item.label}</Link></li>
+            ))}
+          </ul>
         </nav>
-      </div>
-      <div className='mobile-header'>
-        <div className='mobile-title-row'>
-          <span onClick={toggleSidebar} className="material-icons-outlined header-icon">menu</span>
-          <Link className='home-logo' to='/'>Super WebStore</Link>
-          <Link className='cart-link' to='cart'>
-            <span className="material-icons-outlined header-icon">shopping_cart</span>
+
+        <div className='header-actions'>
+          <Link className='header-icon-button account-link' to='/account' aria-label='Your account'>
+            <span className='material-icons-outlined' aria-hidden='true'>account_circle</span>
+          </Link>
+          <Link className='header-icon-button cart-link' to='/cart' aria-label={`Shopping cart, ${cartCount} ${cartCount === 1 ? 'item' : 'items'}`}>
+            <span className='material-icons-outlined' aria-hidden='true'>shopping_cart</span>
+            {cartCount > 0 && <span className='cart-count' aria-hidden='true'>{cartCount > 99 ? '99+' : cartCount}</span>}
           </Link>
         </div>
-        <div className='mobile-search-input'>
-          <span className='material-icons-sharp search-icon'>search</span>
-          <span className='search-text'>Search for products</span>
-        </div>
       </div>
-      <div className={`side-bar ${sidebarActive ? 'active' : ''}`}>
-        <div onClick={toggleSidebar} className='close-sidebar'>
-          <span className="material-icons-outlined">close</span>
+
+      {menuOpen && <button className='mobile-menu-backdrop' type='button' aria-label='Close navigation menu' onClick={closeMenu} />}
+      <aside className={`mobile-menu${menuOpen ? ' mobile-menu--open' : ''}`} id='primary-navigation' aria-label='Mobile navigation' aria-hidden={!menuOpen}>
+        <div className='mobile-menu-heading'>
+          <strong>Menu</strong>
+          <button className='header-icon-button' type='button' aria-label='Close navigation menu' onClick={closeMenu}>
+            <span className='material-icons-outlined' aria-hidden='true'>close</span>
+          </button>
         </div>
-        <nav>
-          <li>
-            <ul>
-              <Link to='account' onClick={toggleSidebar}>Account</Link>
-            </ul>
-            <ul>
-              <Link to='categories' onClick={toggleSidebar}>Categories</Link>
-            </ul>
-            <ul>
-              <Link to='deals' onClick={toggleSidebar}>Deals</Link>
-            </ul>
-            <ul>
-              <Link to='recipes' onClick={toggleSidebar}>Recipes</Link>
-            </ul>
-          </li>
+        <nav aria-label='Mobile primary navigation'>
+          <ul>
+            <li><Link to='/account' onClick={closeMenu}>Account</Link></li>
+            {navigation.map((item) => (
+              <li key={item.to}><Link to={item.to} onClick={closeMenu}>{item.label}</Link></li>
+            ))}
+          </ul>
         </nav>
-      </div>
+      </aside>
     </header>
-  )
+  );
 }
 
 export default Header;
