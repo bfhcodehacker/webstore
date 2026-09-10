@@ -1,13 +1,15 @@
 import '../styles/ProductPage.css';
+import { useState } from 'react';
+import type { ReactNode } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router"
 import datasource from "../datasource/datasource";
 import defaultImage from '../assets/5191452-200.png';
 import { useAppDispatch } from '../app/hooks';
 import { addToCart } from '../slices/cartSlice';
-import type { Product } from '../types/productTypes';
 
 export function Product() {
+  const [expandedDetails, setExpandedDetails] = useState<Record<string, boolean>>({});
   const dispatch = useAppDispatch();
   const params = useParams();
   const queryKey = params.id ? 'product' + params.id : 'empty-product-key';
@@ -22,6 +24,28 @@ export function Product() {
     }
   }
 
+  const toggleDetail = (detail: string) => {
+    setExpandedDetails((current) => ({ ...current, [detail]: !current[detail] }));
+  };
+
+  const renderRating = (rating: number) => {
+    const roundedRating = Math.floor(rating * 2) / 2;
+
+    return (
+      <div className='product-page-rating' aria-label={`${rating} out of 5 stars`}>
+        {[0, 1, 2, 3, 4].map((index) => {
+          const icon = roundedRating >= index + 1
+            ? 'star'
+            : roundedRating >= index + 0.5
+              ? 'star_half'
+              : 'star_border';
+
+          return <span className='material-icons' aria-hidden='true' key={index}>{icon}</span>;
+        })}
+      </div>
+    );
+  };
+
   const renderProduct = () => {
     const { data } = productQuery;
 
@@ -31,17 +55,87 @@ export function Product() {
       )
     }
 
+    const details: { key: string; label: string; value: ReactNode }[] = [
+      ...(data.brand ? [{ key: 'brand', label: 'Brand', value: data.brand }] : []),
+      ...(data.category ? [{ key: 'category', label: 'Category', value: data.category }] : []),
+      ...(data.discountPercentage !== undefined ? [{ key: 'discount', label: 'Discount', value: `${data.discountPercentage}%` }] : []),
+      ...(data.stock !== undefined ? [{ key: 'stock', label: 'Stock', value: data.stock }] : []),
+      ...(data.tags?.length ? [{ key: 'tags', label: 'Tags', value: data.tags.join(', ') }] : []),
+      ...(data.sku ? [{ key: 'sku', label: 'SKU', value: data.sku }] : []),
+      ...(data.weight !== undefined ? [{ key: 'weight', label: 'Weight', value: data.weight }] : []),
+      ...(data.dimensions ? [{
+        key: 'dimensions',
+        label: 'Dimensions',
+        value: [data.dimensions.width, data.dimensions.height, data.dimensions.depth]
+          .filter((dimension) => dimension !== undefined)
+          .join(' × '),
+      }] : []),
+      ...(data.warrantyInformation ? [{ key: 'warranty', label: 'Warranty', value: data.warrantyInformation }] : []),
+      ...(data.shippingInformation ? [{ key: 'shipping', label: 'Shipping Information', value: data.shippingInformation }] : []),
+      ...(data.availabilityStatus ? [{ key: 'availability', label: 'Availability', value: data.availabilityStatus }] : []),
+      ...(data.returnPolicy ? [{ key: 'returns', label: 'Return Policy', value: data.returnPolicy }] : []),
+      ...(data.minimumOrderQuantity !== undefined ? [{ key: 'minimum-order', label: 'Minimum Order Quantity', value: data.minimumOrderQuantity }] : []),
+      ...(data.reviews?.length ? [{
+        key: 'reviews',
+        label: 'Reviews',
+        value: (
+          <div className='product-review-list'>
+            {data.reviews.map((review, index) => (
+              <div className='product-review' key={`${review.reviewerEmail}-${index}`}>
+                <strong>{review.reviewerName || 'Customer'} — {review.rating}/5</strong>
+                {review.comment && <span>{review.comment}</span>}
+                {review.date && <small>{new Date(review.date).toLocaleDateString()}</small>}
+              </div>
+            ))}
+          </div>
+        ),
+      }] : []),
+      ...(data.meta ? [{
+        key: 'metadata',
+        label: 'Product Metadata',
+        value: (
+          <div className='product-metadata'>
+            {data.meta.barcode && <span><strong>Barcode:</strong> {data.meta.barcode}</span>}
+            {data.meta.createdAt && <span><strong>Created:</strong> {new Date(data.meta.createdAt).toLocaleDateString()}</span>}
+            {data.meta.updatedAt && <span><strong>Updated:</strong> {new Date(data.meta.updatedAt).toLocaleDateString()}</span>}
+            {data.meta.qrCode && <img src={data.meta.qrCode} alt='Product QR code' />}
+          </div>
+        ),
+      }] : []),
+    ];
+
     return (
       <div className='product-data-container'>
         <h1 className='product-page-title'>{data.title}</h1>
         <div className='product-page-info'>
           <div className='product-page-left'>
-            <img src={data.images?.[0] || defaultImage} className='product-page-image' />
-            <div className='product-page-price'>{data.price && `Price: $${data.price}`}</div>
+            <img
+              src={data.images?.[0] || defaultImage}
+              className='product-page-image'
+              alt={data.title || 'Product'}
+            />
           </div>
           <div className='product-page-data-box'>
-            <div className='product-page-description'>{data.description && data.description}</div>
-            <button onClick={addProductToCart} className='product page-add-to-cart'>Add To Cart</button>
+            {data.price !== undefined && (
+              <div className='product-page-price'>${data.price.toFixed(2)}</div>
+            )}
+            {data.rating !== undefined && (
+              renderRating(data.rating)
+            )}
+            <p className='product-page-description'>{data.description}</p>
+            <div className='product-details-section'>
+              <h2 className='product-details-heading'>Product Details</h2>
+              {details.map((detail) => (
+                <div className='product-detail-item' key={detail.key}>
+                  <button className='product-details-toggle' type='button' aria-expanded={Boolean(expandedDetails[detail.key])} aria-controls={`${detail.key}-detail`} onClick={() => toggleDetail(detail.key)}>
+                    <span>{detail.label}</span>
+                    <span className='material-icons' aria-hidden='true'>{expandedDetails[detail.key] ? 'expand_less' : 'expand_more'}</span>
+                  </button>
+                  {expandedDetails[detail.key] && <div className='product-detail-value' id={`${detail.key}-detail`}>{detail.value}</div>}
+                </div>
+              ))}
+            </div>
+            <button onClick={addProductToCart} className='page-add-to-cart'>Add To Cart</button>
           </div>
         </div>
       </div>
@@ -50,7 +144,7 @@ export function Product() {
 
   const renderLoading = () => {
     return (
-      <div>Loading...</div>
+      <div className='product-page-message'>Loading...</div>
     );
   }
 
