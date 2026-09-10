@@ -7,6 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "typecheck": "tsc -b",
+    "validate": "npm run lint && npm run typecheck",
+    "prepare": "git config core.hooksPath .githooks || true",
     "preview": "vite preview"
   },
   "dependencies": {
