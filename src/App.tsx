@@ -12,10 +12,12 @@ import { Recipes } from './pages/Recipes.tsx'
 import { Cart } from './pages/Cart.tsx'
 import { Checkout } from './pages/Checkout.tsx'
 import { HeaderFooterLayout } from './components/HeaderFooterLayout.tsx'
+import { AddedToCartModal } from './components/AddedToCartModal.tsx'
 
 export function App() {
   return (
     <div className='mainApp'>
+      <AddedToCartModal />
       <Routes>
         <Route element={<HeaderFooterLayout />}>
           <Route index element={<HomePage />} />
